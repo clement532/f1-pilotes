@@ -1,0 +1,142 @@
+# Recherche de pilotes de Formule 1 en Go
+
+## 1. Présentation du projet
+
+Ce projet consiste à développer un programme en langage Go permettant de rechercher des pilotes de Formule 1 à partir de leur numéro de course.
+
+Le programme utilise l'API publique **F1 Companion** pour récupérer les informations des pilotes de la saison en cours.
+
+L'utilisateur peut effectuer une recherche par numéro, par code à trois lettres ou par nom. Il peut également afficher la liste complète des pilotes.
+
+**API utilisée :** https://f1-companion-api-ba5k.onrender.com/drivers
+
+## 2. Organisation du projet
+
+Pour rendre le code plus clair et plus facile à maintenir, j'ai réparti les différentes fonctionnalités dans plusieurs fichiers.
+
+| Fichier | Description |
+|---|---|
+| `main.go` | Lance le programme et gère les dernières erreurs. |
+| `models.go` | Contient les structures Go utilisées pour récupérer les données JSON. |
+| `api.go` | Envoie la requête à l'API, vérifie la réponse et récupère les données. |
+| `input.go` | Vérifie que la saisie de l'utilisateur est correcte. |
+| `search.go` | Recherche un pilote dans la liste récupérée. |
+| `display.go` | Affiche les informations des pilotes dans le terminal. |
+| `app.go` | Gère le fonctionnement général du programme, la boucle de recherche et le cache. |
+| `go.mod` | Contient les informations du module Go. |
+
+Cette organisation permet à chaque fichier d'avoir un rôle précis.
+
+## 3. lancement
+
+
+ouvrir le dossier `f1-pilotes-separe` dans Visual Studio Code et de lancer un terminal.
+
+Pour démarrer le programme, on utilise la commande suivante :
+
+```bash
+go run .
+```
+
+Le programme demande alors à l'utilisateur de saisir un numéro, un nom ou un code de pilote.
+
+Il est également possible de lancer une recherche directement avec une commande :
+
+```bash
+go run . 44
+```
+
+## 4. Exemples d'utilisation
+
+**Recherche avec un numéro**
+
+Si l'utilisateur saisit `44`, le programme recherche le pilote correspondant et affiche ses informations.
+
+```text
+Votre recherche : 44
+
+Numéro      : 44
+Prénom      : Lewis
+Nom         : Hamilton
+Nationalité : British
+Code        : HAM
+```
+
+Cet exemple correspond aux données fournies dans l'énoncé. Les résultats réels dépendent des informations renvoyées par l'API.
+
+**Recherche d'un numéro inexistant**
+
+```text
+Votre recherche : 999
+
+Aucun pilote ne porte le numéro 999.
+```
+
+**Autres possibilités**
+
+- `all` ou `ALL` : afficher tous les pilotes.
+- `HAM` : rechercher un pilote avec son code.
+- `Hamilton` : rechercher un pilote avec son nom.
+- `q` : quitter le programme.
+
+## 5. Fonctionnalités du programme
+
+Le programme permet de :
+
+- Vérifier que le numéro saisi est un entier positif.
+- Récupérer les pilotes grâce à une requête HTTP GET.
+- Vérifier que le serveur renvoie bien un statut HTTP 200.
+- Convertir les données JSON en structures Go.
+- Rechercher un pilote à partir de son numéro.
+- Afficher les informations du pilote trouvé.
+- Afficher un message lorsqu'aucun pilote ne correspond.
+- Gérer les erreurs de saisie, de connexion et de réponse de l'API.
+- La recherche par nom ou par code.
+- L'affichage de tous les pilotes.
+- La possibilité de faire plusieurs recherches sans relancer le programme.
+- La recherche directement depuis une commande.
+- Un système de cache pour conserver les données récupérées pendant l'exécution.
+
+Un délai d'attente de 90 secondes est prévu pour éviter que le programme reste bloqué si l'API met trop de temps à répondre.
+
+## 6. Tests du programme
+
+Pour vérifier le fonctionnement du programme, voici les différents tests à réaliser :
+
+| Commande | Résultat attendu |
+|---|---|
+| `go run . 44` | Affiche les informations du pilote numéro 44. |
+| `go run . 999` | Indique qu'aucun pilote n'a été trouvé. |
+| `go run . all` | Affiche la liste complète des pilotes. |
+| `go run . -5` | Affiche une erreur de saisie. |
+| `go run . abc123` | Affiche une erreur de saisie. |
+| `go run . HAM` | Recherche le pilote avec le code HAM. |
+
+En mode interactif, il est aussi possible de faire plusieurs recherches puis de saisir `q` pour quitter.
+
+## 7. Retour d'expérience
+
+## Retour d'expérience
+
+Au début, j'ai eu du mal à comprendre comment récupérer les informations des pilotes avec l'API.
+
+J'ai utilisé des structures Go pour ranger les informations des pilotes au bon endroit.
+
+J'ai aussi fait attention aux numéros des pilotes, car l'API les donne sous forme de texte.
+
+Ensuite, j'ai fait une fonction pour chercher un pilote dans la liste avec son numéro.
+
+J'ai ajouté des vérifications pour éviter les problèmes quand l'utilisateur écrit quelque chose de faux.
+
+J'ai aussi mis un temps d'attente pour que le programme ne reste pas bloqué si l'API est trop lente.
+
+Pour finir, j'ai mis les fonctions dans plusieurs fichiers pour que mon code soit plus propre et plus facile à comprendre.
+## 8. Conclusion
+
+Ce projet m'a permis de mieux comprendre comment utiliser une API avec le langage Go.
+
+J'ai appris à envoyer une requête HTTP, récupérer et décoder des données JSON, rechercher des informations dans une liste et gérer les erreurs.
+
+J'ai également appris à organiser un programme en séparant les fonctions selon leur rôle.
+
+Les fonctionnalités supplémentaires m'ont permis d'améliorer le programme et de le rendre plus pratique à utiliser.
